@@ -12,6 +12,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
     course: { value: courseName },
     valueChangeHandler,
   } = useContext(CollegeContext);
+  console.log(options);
   const selectedVal = isCollege ? collegeName : courseName;
   useEffect(() => {
     const { top } = inputRef.current.getBoundingClientRect();
@@ -66,6 +67,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
     );
     filteredOptions.push(includeFilter);
     const refinedFilteredOption = Array.from(new Set(filteredOptions.flat()));
+    console.log(refinedFilteredOption);
     return refinedFilteredOption;
   };
   const arrowClickHandler = (e) => {
@@ -153,7 +155,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
             onChange={(e) => {
               setQuery(e.target.value);
               // console.log(selectedVal);
-              valueChangeHandler(null, isCollege);
+              valueChangeHandler(null, null, isCollege);
             }}
             onKeyDown={keyDownHandler}
             onClick={toggle}

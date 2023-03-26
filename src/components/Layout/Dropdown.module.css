@@ -3,6 +3,7 @@
   color: #333;
   cursor: default;
   width: 30rem;
+  margin-top: 1.2rem;
 }
 .input {
   font: 600;
@@ -13,12 +14,12 @@
   border-width: 5px 5px 0;
   content: ' ';
   display: block;
-  height: 0;
+  height: 0px;
   margin-top: 0.3rem;
   position: absolute;
   right: 10px;
   top: 14px;
-  width: 2px;
+  /* width: 2px; */
 }
 
 .dropdown .arrow.open {

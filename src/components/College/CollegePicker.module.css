@@ -13,7 +13,8 @@
 }
 .subscript {
   font-size: 1.2rem;
-  margin: 1.5rem 0;
+  font-style: italic;
+  margin-top: 1.2rem;
 }
 .container button {
   margin-top: 2rem;
@@ -33,4 +34,9 @@
   cursor: not-allowed;
   background-color: #cccccc;
   border-color: aliceblue;
+}
+.uni {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
