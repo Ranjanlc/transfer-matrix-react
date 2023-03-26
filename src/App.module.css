@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7rem;
+  /* padding: 0.25rem 0; */
+  margin-bottom: 1.9rem;
+  /* margin-top: 0.2rem; */
+  background-color: rgba(255, 221, 100, 0.671);
+  border-bottom: 1px solid rgb(213, 153, 43);
+}
+.logo {
+  width: 90px;
+  margin-right: 3rem;
+}
+.title {
+  font-size: 1.7rem;
+  font-weight: bold;
+}

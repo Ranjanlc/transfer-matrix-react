@@ -1,0 +1,36 @@
+.container {
+  height: 500px;
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  flex-wrap: wrap;
+}
+.step {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.subscript {
+  font-size: 1.2rem;
+  margin: 1.5rem 0;
+}
+.container button {
+  margin-top: 2rem;
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: #dd6400;
+  border: 1px solid #df7904;
+  border-radius: 50px;
+  padding: 0.7rem 3rem;
+}
+.container .abled:hover {
+  background-color: #f38823;
+  border-color: #dcae19;
+}
+.container .disabled {
+  cursor: not-allowed;
+  background-color: #cccccc;
+  border-color: aliceblue;
+}
