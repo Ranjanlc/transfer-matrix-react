@@ -7,6 +7,7 @@ const CollegePicker = (props) => {
   const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState(true);
   const nextClickHandler = () => {
+    console.log('yo execute bho ta??');
     navigate('/pick-course');
   };
   return (

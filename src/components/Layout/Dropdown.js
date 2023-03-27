@@ -8,15 +8,15 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const {
-    college: { value: collegeName },
-    course: { value: courseName },
+    college: { name: collegeName },
+    course: { name: courseName },
     valueChangeHandler,
   } = useContext(CollegeContext);
-  console.log(options);
+  console.log(options, isCollege);
   const selectedVal = isCollege ? collegeName : courseName;
   useEffect(() => {
     const { top } = inputRef.current.getBoundingClientRect();
-    setDisabledHandler(collegeName.includes('Select college'));
+    setDisabledHandler(collegeName.includes('Select'));
     setInputTop(top);
     document.addEventListener('click', toggle);
     return () => document.removeEventListener('click', toggle);
@@ -50,6 +50,8 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
   };
 
   const filter = (options) => {
+    console.log(options);
+    console.log(query.length);
     if (query.length === 0) return options;
     const filteredOptions = [];
     // THe surrounding brackets coz that is how we showed in the UI.
@@ -151,6 +153,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
             type="text"
             value={getDisplayValue()}
             name="searchTerm"
+            autoComplete="off"
             className={classes.input}
             onChange={(e) => {
               setQuery(e.target.value);
