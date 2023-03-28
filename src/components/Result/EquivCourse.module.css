@@ -1,0 +1,125 @@
+.container {
+  height: 500px;
+  /* margin-left: 2rem; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  flex-wrap: wrap;
+  /* overflow: auto; */
+}
+.header {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+  /* font-weight: 600; */
+  margin-bottom: 0.4rem;
+  /* font-style: italic; */
+}
+.course {
+  /* /* margin-bottom: 0.25rem; */
+  /* margin-top: 0.4rem; */
+  font-size: 1rem;
+  font-weight: 500;
+  font-style: italic;
+}
+.college {
+  /* margin: 0.25rem 0; */
+  text-align: center;
+  font-family: 'ABeeZee', sans-serif;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.03rem;
+  font-weight: bold;
+  color: rgb(255, 136, 8);
+}
+.offer {
+  font-family: 'Lato', 'sans-serif';
+  font-size: 1.09rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+  /* font-style: italic; */
+}
+.table {
+  width: 90%;
+  max-width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  /* margin-left: 5rem; */
+  text-align: center;
+}
+td {
+  font-family: 'Crimson Text', serif;
+  border-width: 1px;
+  /* font-style: italic; */
+  width: 20px;
+  border-style: solid;
+  border-color: #f973055e;
+  border-bottom: hidden;
+  height: 2px;
+}
+th {
+  font-weight: 600;
+  font-size: 1.12rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #f973055e;
+  /* border-top: 1px; */
+  border-top: hidden;
+}
+.table .first-column {
+  width: 35%;
+  border-left: hidden;
+}
+.table .last-column {
+  /* width: 15%; */
+  border-right: hidden;
+}
+.no-eqvt-course {
+  background-color: rgba(244, 27, 27, 0.614);
+}
+.credit {
+  text-align: center;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+.hour {
+  color: rgb(255, 136, 8);
+  /* font-weight: bolder; */
+}
+
+.desc {
+  opacity: 0; /* color: whitesmoke; */
+  position: relative;
+  top: 20px;
+  background-color: rgba(114, 131, 143, 0.096);
+}
+.link {
+  text-align: center;
+  text-decoration: underline;
+  color: rgba(237, 44, 254, 0.874);
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 500;
+}
+.link:hover {
+  color: rgba(164, 33, 176, 0.733);
+}
+
+@media (min-width: 270px) and (max-width: 769px) {
+  .offer {
+    text-align: center;
+  }
+  .container {
+    flex-wrap: nowrap;
+  }
+  .table {
+    width: 100%;
+  }
+}

@@ -1,6 +1,6 @@
 .container {
   height: 500px;
-  margin-left: 2rem;
+  /* margin-left: 2rem; */
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -12,9 +12,12 @@
   font-weight: bold;
 }
 .subscript {
+  /* background-color: #dcae19; */
+  font-family: 'Crimson Text', serif;
   font-size: 1.2rem;
   font-style: italic;
-  margin-top: 1.2rem;
+  margin-top: 0.8rem;
+  /* font-family: 'Sofia Sans', sans-serif; */
 }
 .container button {
   margin-top: 2rem;
@@ -32,11 +35,25 @@
 }
 .container .disabled {
   cursor: not-allowed;
-  background-color: #cccccc;
+  color: black;
+  background-color: #b3b1b1b0;
   border-color: aliceblue;
 }
 .uni {
   font-size: 1.2rem;
   font-weight: bold;
   margin-top: 0.5rem;
+}
+.cur-page {
+  color: #f38823;
+  /* transition: all 4s ease-in; */
+}
+@media (min-width: 270px) and (max-width: 769px) {
+  /* … */
+  .subscript {
+    width: 100%;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }

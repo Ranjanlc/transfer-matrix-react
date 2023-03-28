@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import logo from './assets/ecu-logo.png';
 import classes from './App.module.css';
 import CoursePicker from './components/College/CoursePicker';
+import EquivCourse from './components/Result/EquivCourse';
 function App() {
   return (
     <Fragment>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Navigate to="/pick-college" />} />
         <Route path="/pick-college" element={<CollegePicker />} />
         <Route path="/pick-course" element={<CoursePicker />} />
+        <Route path="/equivalent-course" element={<EquivCourse />}></Route>
       </Routes>
     </Fragment>
   );

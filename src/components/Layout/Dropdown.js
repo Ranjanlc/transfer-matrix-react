@@ -1,7 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import CollegeContext from '../../store/college-context';
 import classes from './Dropdown.module.css';
-const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
+const Dropdown = ({
+  options,
+  isCollege,
+  setDisabledHandler,
+  setButtonShow,
+}) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [inputTop, setInputTop] = useState(null);
@@ -9,14 +14,17 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
   const listRef = useRef(null);
   const {
     college: { name: collegeName },
-    course: { name: courseName },
+    courses,
     valueChangeHandler,
   } = useContext(CollegeContext);
-  console.log(options, isCollege);
+  const courseName = courses[0].name;
+  // console.log(options, isCollege);
   const selectedVal = isCollege ? collegeName : courseName;
   useEffect(() => {
     const { top } = inputRef.current.getBoundingClientRect();
-    setDisabledHandler(collegeName.includes('Select'));
+    isCollege
+      ? setDisabledHandler(collegeName.includes('Select'))
+      : setDisabledHandler(courseName.includes('Select'));
     setInputTop(top);
     document.addEventListener('click', toggle);
     return () => document.removeEventListener('click', toggle);
@@ -30,28 +38,40 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
   };
 
   function toggle(e) {
-    if (e.target.className === classes.input) {
+    if (e.target === inputRef.current) {
+      setIsOpen(true);
       e.target.select();
-      // const curListEl = Array.from(listRef.current.children);
-      // console.log(
-      //   curListEl.findIndex((el) => el.className.includes(classes.selected)) <=
-      //     0
-      // );
-      // curListEl.findIndex((el) => el.className.includes(classes.selected)) <=
-      //   0 && curListEl[0].classList.add(classes.focused);
+      const curListEl = Array.from(listRef.current.children);
+
+      const containsFocusedEl = curListEl.some((el) =>
+        el.className.includes(classes.focused)
+      );
+      // To remove focused class on first element,which is caused by the side-effect of having focused class on first element while doing keystrokes.
+      if (containsFocusedEl) {
+        curListEl[0].classList.remove(classes.focused);
+      }
+      // if (!isCollege) {
+      //   console.log(curListEl);
+      //   const activeEl = curListEl.find((el) =>
+      //     el.className.includes(classes.focused)
+      //   );
+      //   console.log(activeEl);
+      //   if (activeEl) {
+      //     activeEl.style.backgroundColor = 'inherit';
+      //   }
+      // }
     }
-    setIsOpen(e && e.target === inputRef.current);
   }
 
   const getDisplayValue = () => {
     if (query) return query;
-    if (selectedVal) return selectedVal;
-    return '';
+    if (selectedVal && isCollege) return selectedVal;
+    return 'Select...';
   };
 
   const filter = (options) => {
-    console.log(options);
-    console.log(query.length);
+    // console.log(options);
+    // console.log(query.length);
     if (query.length === 0) return options;
     const filteredOptions = [];
     // THe surrounding brackets coz that is how we showed in the UI.
@@ -80,16 +100,21 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
     }
   };
   const keyDownHandler = (e) => {
-    if (
-      !(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter') ||
-      !isOpen
-    )
-      return;
+    if (!isOpen) return;
     const curListEl = Array.from(listRef.current.children);
     // For initial index,we get 0.
     let activeIndex = curListEl.findIndex((el) =>
       el.className.includes(classes.focused)
     );
+    if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter')) {
+      console.log(
+        curListEl.some((el) => el.className.includes(classes.focused))
+      );
+      if (!curListEl.some((el) => el.className.includes(classes.focused))) {
+        curListEl[0]?.classList?.add(classes.focused);
+      }
+      return;
+    }
     if (e.key === 'ArrowDown') {
       if (activeIndex < curListEl.length - 1) {
         activeIndex += 1;
@@ -97,11 +122,15 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
         const { top: listElTop } =
           curListEl[activeIndex].getBoundingClientRect();
         const heightDiff = Math.round(listElTop - inputTop);
+        console.log(heightDiff);
         if (heightDiff > 200) {
           curListEl[activeIndex].scrollIntoView({
             behavior: 'smooth',
           });
         }
+        // if (heightDiff < 4) {
+        //   curListEl[activeIndex].scrollIntoView();
+        // }
       }
     }
     if (e.key === 'ArrowUp') {
@@ -111,7 +140,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
         const { top: listElTop } =
           curListEl[activeIndex].getBoundingClientRect();
         const heightDiff = Math.round(listElTop - inputTop);
-        // console.log(heightDiff);
+        console.log(heightDiff);
         if (heightDiff < 10) {
           // console.log(curListEl[activeIndex]);
           // To address when we do up arrow at top of the list.
@@ -120,14 +149,23 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
             : curListEl[activeIndex].scrollIntoView();
         }
       }
+      // } else {
+      //   const { top: listElTop } = curListEl[0].getBoundingClientRect();
+      //   const heightDiff = Math.round(listElTop - inputTop);
+      //   console.log(heightDiff);
+      //   if (heightDiff < 0) {
+      //     curListEl[1].scrollIntoView();
+      //   }
+      // }
     }
     // To rule out the possibility that user doesnt choose anything from list.
     if (!curListEl[activeIndex]) return;
-    valueChangeHandler(
-      curListEl[activeIndex].textContent,
-      curListEl[activeIndex].value,
-      isCollege
-    );
+    isCollege &&
+      valueChangeHandler(
+        curListEl[activeIndex].textContent,
+        curListEl[activeIndex].value,
+        isCollege
+      );
     curListEl[activeIndex].classList.add(classes.focused);
     if (e.key === 'Enter') {
       const selectedItem = listRef.current.children[activeIndex];
@@ -143,6 +181,13 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
       inputRef.current.blur();
     }
   };
+  useEffect(() => {
+    if (isOpen) {
+      setButtonShow(false);
+    } else {
+      setButtonShow(true);
+    }
+  }, [isOpen]);
 
   return (
     <div className={classes.dropdown}>
@@ -158,7 +203,7 @@ const Dropdown = ({ options, isCollege, setDisabledHandler }) => {
             onChange={(e) => {
               setQuery(e.target.value);
               // console.log(selectedVal);
-              valueChangeHandler(null, null, isCollege);
+              // valueChangeHandler(null, null, isCollege);
             }}
             onKeyDown={keyDownHandler}
             onClick={toggle}

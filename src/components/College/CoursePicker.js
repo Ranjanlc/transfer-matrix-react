@@ -1,28 +1,45 @@
-import { useContext, useEffect, useState } from 'react';
+import {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import CollegeContext from '../../store/college-context';
-import classes from './CollegePicker.module.css';
+import classes from '../Layout/PickerLayout.module.css';
+import particularClasses from './CoursePicker.module.css';
 import Dropdown from '../Layout/Dropdown';
-import LoadingSpinner from '../Layout/LoadingSpinner';
+import LoadingSpinner from '../UI/LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
+import PickerLayout from '../Layout/PickerLayout';
+import CloseBtn from '../../assets/CloseBtn';
 const CoursePicker = (props) => {
-  console.log('runned course picker??');
   const [isLoading, setIsLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const navigate = useNavigate();
   const {
     college: { name: collegeName, id: collegeId },
+    courses,
     setCourseMapHandler,
     courseMap,
+    valueChangeHandler,
+    coursesChangeHandler,
   } = useContext(CollegeContext);
   const [courseContainer, setCourseContainer] = useState([{ name: '' }]);
-  // course.id ? { value: course.value, id: course.id } : { value: [] }
-
+  const [selectedCourses, setSelectedCourses] = useState(courses);
+  const selectedCoursesRef = useRef(null);
   const { name: finalCollegeName, id: finalCollegeId } = collegeId
     ? { name: collegeName, id: collegeId }
     : JSON.parse(localStorage.getItem('college'));
-  console.log(finalCollegeId, finalCollegeName, courseMap, courseContainer);
-  // useEffect(() => {
-  //   console.log('oi run bhayena');
-
-  // }, []);
+  // const finalCourses = courses[0].id
+  //   ? courses
+  //   : JSON.parse(localStorage.getItem('course'));
+  // console.log(finalCollegeId, finalCollegeName, courseMap, courseContainer);
+  const [showButton, setShowButton] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const buttonShowHandler = (val) => {
+    setShowButton(val);
+  };
   const fetchCourseContent = async () => {
     setIsLoading(true);
     const res = await fetch(
@@ -37,8 +54,9 @@ const CoursePicker = (props) => {
       startDateContainer,
       endDateContainer,
       levels,
+      creditHours,
     } = course;
-    console.log(id, eqvtCourses, startDateContainer);
+    // console.log(id, eqvtCourses, startDateContainer);
     const courseMapContainer = new Map();
     for (let i = 0; i < collegeCourses.length; i++) {
       courseMapContainer.set(collegeCourses[i], {
@@ -46,6 +64,7 @@ const CoursePicker = (props) => {
         startDate: startDateContainer[i],
         endDate: endDateContainer[i],
         level: levels[i],
+        creditHour: creditHours[i],
       });
     }
     // console.log(setcourseMapContainerHandler);
@@ -58,43 +77,98 @@ const CoursePicker = (props) => {
     setCourseMapHandler(courseMapContainer);
     setIsLoading(false);
   };
+  useMemo(() => {
+    setSelectedCourses(courses);
+  }, [courses]);
   useEffect(() => {
-    console.log('run bHOO');
-    const courses = Array.from(courseMap.keys()).map((course, index) => {
-      return { name: course, id: index };
-    });
-    console.log(courses);
-    setCourseContainer(courses);
+    document.title = 'ECU Transfer Matrix | Pick Course';
+    const courseContainer = Array.from(courseMap.keys()).map(
+      (course, index) => {
+        return { name: course, id: index };
+      }
+    );
+    // console.log(courseContainer);
+    setCourseContainer(courseContainer);
     if (courseMap.size === 0) {
       fetchCourseContent();
     }
-  }, []);
+  }, [finalCollegeId]);
   const nextClickHandler = () => {
-    // console.log('ki yo execute bhoooo');
+    navigate('/equivalent-course');
   };
+  const closeClickHandler = (id) => {
+    const newSelectedCourses = selectedCourses.filter((el) => el.id !== id);
+    console.log(newSelectedCourses);
+    // setSelectedCourses(newSelectedCourses);
+    if (newSelectedCourses.length === 0) {
+      setIsDisabled(true);
+    }
+    coursesChangeHandler(newSelectedCourses);
+    // localStorage.getItem('course').removeItem()
+  };
+  const selectedCoursesContainer = selectedCourses.map(
+    ({ name, id }, index) => {
+      if (name.includes('Select')) {
+        // if (!isDisabled) {
+        //   setIsDisabled(true);
+        // }
+        return (
+          <div className={particularClasses.fallback}>
+            You haven't selected any course yet{' '}
+            <span className={particularClasses.dot}></span>
+            <span className={particularClasses.dot}></span>
+            <span className={particularClasses.dot}></span>
+          </div>
+        );
+      }
+      if (!name.includes('Select')) {
+        return (
+          <div className={particularClasses.course} key={index}>
+            {name}
+            <CloseBtn onClick={closeClickHandler.bind(null, id)} />
+          </div>
+        );
+      }
+    }
+  );
   return (
     <div className={classes.container}>
-      <div className={classes.step}> Step 2:</div>
-      <div className={classes.subscript}>Select a course from :</div>
-      <div className={classes.uni}>{finalCollegeName.split('-')[0]}</div>
+      <div className={classes.step}>
+        Step <span className={classes['cur-page']}>2</span>/2 :
+      </div>
+      <div className={classes.subscript}>Please pick a course from:</div>
+      <div className={particularClasses.uni}>
+        {finalCollegeName.split('-')[0]}
+      </div>
       {isLoading && <LoadingSpinner />}
       {!isLoading && (
         <Dropdown
           isCollege={false}
-          // courseMap.keys return mapIterator,which is converted to array
           options={courseContainer}
           setDisabledHandler={(val) => {
             setIsDisabled(val);
           }}
+          setButtonShow={buttonShowHandler}
         />
       )}
-      <button
-        onClick={nextClickHandler}
-        disabled={isDisabled}
-        className={isDisabled ? classes.disabled : classes.abled}
-      >
-        Next
-      </button>
+      {showButton && !isLoading && (
+        <article
+          className={particularClasses['courses-container']}
+          ref={selectedCoursesRef}
+        >
+          <div className={particularClasses.title}>Your courses</div>
+          {selectedCoursesContainer}
+        </article>
+      )}
+      {showButton && !isLoading && (
+        <button
+          onClick={nextClickHandler}
+          disabled={isDisabled}
+          className={isDisabled ? classes.disabled : classes.abled}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };
