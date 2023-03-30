@@ -1,18 +1,10 @@
-import {
-  Fragment,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import CollegeContext from '../../store/college-context';
-import classes from '../Layout/PickerLayout.module.css';
+import classes from './CollegePicker.module.css';
 import particularClasses from './CoursePicker.module.css';
 import Dropdown from '../Layout/Dropdown';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
-import PickerLayout from '../Layout/PickerLayout';
 import CloseBtn from '../../assets/CloseBtn';
 const CoursePicker = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +14,6 @@ const CoursePicker = (props) => {
     courses,
     setCourseMapHandler,
     courseMap,
-    valueChangeHandler,
     coursesChangeHandler,
   } = useContext(CollegeContext);
   const [courseContainer, setCourseContainer] = useState([{ name: '' }]);
@@ -31,10 +22,7 @@ const CoursePicker = (props) => {
   const { name: finalCollegeName, id: finalCollegeId } = collegeId
     ? { name: collegeName, id: collegeId }
     : JSON.parse(localStorage.getItem('college'));
-  // const finalCourses = courses[0].id
-  //   ? courses
-  //   : JSON.parse(localStorage.getItem('course'));
-  // console.log(finalCollegeId, finalCollegeName, courseMap, courseContainer);
+
   const [showButton, setShowButton] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
   const buttonShowHandler = (val) => {
@@ -43,12 +31,11 @@ const CoursePicker = (props) => {
   const fetchCourseContent = async () => {
     setIsLoading(true);
     const res = await fetch(
-      `http://localhost:8080/get-course?collegeId=${finalCollegeId}`
+      `https://transfer-matrix.onrender.com/get-course?collegeId=${finalCollegeId}`
     );
     const { course } = await res.json();
     const {
       _id: id,
-      collegeType,
       collegeCourses,
       eqvtCourses,
       startDateContainer,
@@ -87,8 +74,8 @@ const CoursePicker = (props) => {
         return { name: course, id: index };
       }
     );
-    // console.log(courseContainer);
     setCourseContainer(courseContainer);
+    // We fetch the content every time college changes and courseMap is set to zero in context,when college is changed.
     if (courseMap.size === 0) {
       fetchCourseContent();
     }
@@ -99,22 +86,18 @@ const CoursePicker = (props) => {
   const closeClickHandler = (id) => {
     const newSelectedCourses = selectedCourses.filter((el) => el.id !== id);
     console.log(newSelectedCourses);
-    // setSelectedCourses(newSelectedCourses);
     if (newSelectedCourses.length === 0) {
       setIsDisabled(true);
     }
     coursesChangeHandler(newSelectedCourses);
-    // localStorage.getItem('course').removeItem()
   };
   const selectedCoursesContainer = selectedCourses.map(
     ({ name, id }, index) => {
       if (name.includes('Select')) {
-        // if (!isDisabled) {
-        //   setIsDisabled(true);
-        // }
         return (
           <div className={particularClasses.fallback}>
             You haven't selected any course yet{' '}
+            {/* The dots to enable animations */}
             <span className={particularClasses.dot}></span>
             <span className={particularClasses.dot}></span>
             <span className={particularClasses.dot}></span>

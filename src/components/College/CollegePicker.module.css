@@ -1,9 +1,7 @@
 .container {
   height: 500px;
-  /* margin-left: 2rem; */
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   flex-wrap: wrap;
 }
@@ -12,12 +10,10 @@
   font-weight: bold;
 }
 .subscript {
-  /* background-color: #dcae19; */
   font-family: 'Crimson Text', serif;
   font-size: 1.2rem;
   font-style: italic;
   margin-top: 0.8rem;
-  /* font-family: 'Sofia Sans', sans-serif; */
 }
 .container button {
   margin-top: 2rem;
@@ -46,10 +42,8 @@
 }
 .cur-page {
   color: #f38823;
-  /* transition: all 4s ease-in; */
 }
 @media (min-width: 270px) and (max-width: 769px) {
-  /* … */
   .subscript {
     width: 100%;
     text-align: center;

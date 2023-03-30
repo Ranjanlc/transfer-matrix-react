@@ -6,10 +6,13 @@ const Dropdown = ({
   isCollege,
   setDisabledHandler,
   setButtonShow,
+  showNextPage,
 }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  // To get height diff between input and viewport height
   const [inputTop, setInputTop] = useState(null);
+
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const {
@@ -18,7 +21,6 @@ const Dropdown = ({
     valueChangeHandler,
   } = useContext(CollegeContext);
   const courseName = courses[0].name;
-  // console.log(options, isCollege);
   const selectedVal = isCollege ? collegeName : courseName;
   useEffect(() => {
     const { top } = inputRef.current.getBoundingClientRect();
@@ -50,16 +52,6 @@ const Dropdown = ({
       if (containsFocusedEl) {
         curListEl[0].classList.remove(classes.focused);
       }
-      // if (!isCollege) {
-      //   console.log(curListEl);
-      //   const activeEl = curListEl.find((el) =>
-      //     el.className.includes(classes.focused)
-      //   );
-      //   console.log(activeEl);
-      //   if (activeEl) {
-      //     activeEl.style.backgroundColor = 'inherit';
-      //   }
-      // }
     }
   }
 
@@ -70,8 +62,6 @@ const Dropdown = ({
   };
 
   const filter = (options) => {
-    // console.log(options);
-    // console.log(query.length);
     if (query.length === 0) return options;
     const filteredOptions = [];
     // THe surrounding brackets coz that is how we showed in the UI.
@@ -89,7 +79,6 @@ const Dropdown = ({
     );
     filteredOptions.push(includeFilter);
     const refinedFilteredOption = Array.from(new Set(filteredOptions.flat()));
-    console.log(refinedFilteredOption);
     return refinedFilteredOption;
   };
   const arrowClickHandler = (e) => {
@@ -107,9 +96,7 @@ const Dropdown = ({
       el.className.includes(classes.focused)
     );
     if (!(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter')) {
-      console.log(
-        curListEl.some((el) => el.className.includes(classes.focused))
-      );
+      //Adding focused class on first element
       if (!curListEl.some((el) => el.className.includes(classes.focused))) {
         curListEl[0]?.classList?.add(classes.focused);
       }
@@ -122,7 +109,6 @@ const Dropdown = ({
         const { top: listElTop } =
           curListEl[activeIndex].getBoundingClientRect();
         const heightDiff = Math.round(listElTop - inputTop);
-        console.log(heightDiff);
         if (heightDiff > 200) {
           curListEl[activeIndex].scrollIntoView({
             behavior: 'smooth',
@@ -142,21 +128,12 @@ const Dropdown = ({
         const heightDiff = Math.round(listElTop - inputTop);
         console.log(heightDiff);
         if (heightDiff < 10) {
-          // console.log(curListEl[activeIndex]);
-          // To address when we do up arrow at top of the list.
+          // To address when we do up arrow,go back at top of the list.
           curListEl[activeIndex - 4]
             ? curListEl[activeIndex - 4].scrollIntoView()
             : curListEl[activeIndex].scrollIntoView();
         }
       }
-      // } else {
-      //   const { top: listElTop } = curListEl[0].getBoundingClientRect();
-      //   const heightDiff = Math.round(listElTop - inputTop);
-      //   console.log(heightDiff);
-      //   if (heightDiff < 0) {
-      //     curListEl[1].scrollIntoView();
-      //   }
-      // }
     }
     // To rule out the possibility that user doesnt choose anything from list.
     if (!curListEl[activeIndex]) return;
@@ -202,8 +179,6 @@ const Dropdown = ({
             className={classes.input}
             onChange={(e) => {
               setQuery(e.target.value);
-              // console.log(selectedVal);
-              // valueChangeHandler(null, null, isCollege);
             }}
             onKeyDown={keyDownHandler}
             onClick={toggle}

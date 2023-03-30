@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from 'react';
 import CollegeContext from '../../store/college-context';
 import classes from './EquivCourse.module.css';
 import { Link } from 'react-router-dom';
-const EquivCourse = (props) => {
+const EquivCourse = () => {
   const { college, courses, courseMap } = useContext(CollegeContext);
   const { name: collegeName } = college;
   let totalCreditHour = 0;
@@ -65,13 +65,7 @@ const EquivCourse = (props) => {
             <th className={classes['last-column']}>Credit Hour</th>
           </tr>
         </thead>
-        <tbody>
-          {tableContent}
-          {/* <tr>
-            <td colSpan={4}>Total Credit Hours</td>
-            <td>6</td>
-          </tr> */}
-        </tbody>
+        <tbody>{tableContent}</tbody>
       </table>
       <article className={classes.credit}>
         Your total credit hour adds up to{' '}
