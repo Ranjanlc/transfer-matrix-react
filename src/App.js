@@ -5,6 +5,7 @@ import logo from './assets/ecu-logo.png';
 import classes from './App.module.css';
 import CoursePicker from './components/College/CoursePicker';
 import EquivCourse from './components/Result/EquivCourse';
+import ECUTigers from './assets/ECUTigers';
 function App() {
   return (
     <Fragment>
@@ -12,6 +13,8 @@ function App() {
         <img src={logo} className={classes.logo} />
         <span className={classes.title}>ECU Transfer Matrix</span>
       </header>
+      {/* <img src={ECUTigers} alt="" /> */}
+      <ECUTigers className={classes.watermark} />
       <Routes>
         <Route path="/" element={<Navigate to="/pick-college" />} />
         <Route path="/pick-college" element={<CollegePicker />} />
