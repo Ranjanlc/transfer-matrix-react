@@ -6,7 +6,7 @@
 
 <p>To clone the project, open a terminal window and enter the following command:</p>
 
-<pre><code>git clone https://github.com/example-user/react-project.git</code></pre>
+<pre><code>git clone https://github.com/Ranjanlc/transfer-matrix-react.git</code></pre>
 
 <h2>Installing Dependencies</h2>
 
@@ -22,4 +22,4 @@
 
 <h2>Published Domain</h2>
 
-<p>The frontend portion is published at <a href="https://transfer-matrix.vercel.app">Transfer Matrix</a>.</p>
+<p>The frontend portion is published on <a href="https://vercel.com">vercel</a> at <a href="https://transfer-matrix.vercel.app">Transfer Matrix</a>.</p>
