@@ -1,6 +1,6 @@
 <h1>React Project</h1>
 
-<p>This is a sample React project that showcases the basic features of the React framework.</p>
+<p>This is a frontend portion of transfer matrix app which uses React framework.</p>
 
 <h2>Cloning the Project</h2>
 
@@ -20,11 +20,6 @@
 
 <pre><code>npm start</code></pre>
 
-<h2>Learn More</h2>
+<h2>Published Domain</h2>
 
-<p>To learn more about React, visit the official website at <a href="https://reactjs.org/">reactjs.org</a>.</p>
-
-<h2>Contributing</h2>
-
-<p>If you would like to contribute to this project, please fork the repository and submit a pull request.</p>
-# transfer-matrix-react
+<p>The frontend portion is published at <a href="https://transfer-matrix.vercel.app">Transfer Matrix</a>.</p>
